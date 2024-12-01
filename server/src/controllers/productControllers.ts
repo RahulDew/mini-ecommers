@@ -1,7 +1,4 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import User from "../models/User.js";
-import Product from "../models/Product.js";
+import Product from "../models/Product";
 
 import { Request, Response } from "express";
 
@@ -16,7 +13,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
 
 export const getProduct = async (req: Request, res: Response) => {
   console.log("trying to get the product with ID: ", req.params.id);
-  const product = await Product.find({ _id: req.params.id });
+  const product = await Product.findOne({ _id: req.params.id });
   if (product) {
     res.status(200).json(product);
   } else {
@@ -24,13 +21,13 @@ export const getProduct = async (req: Request, res: Response) => {
   }
 };
 
-export const addProducts = async (req: Request, res: Response) => {
+export const addProduct = async (req: Request, res: Response) => {
   const { name, description, price, imageUrl, category, stockQuantity } =
     req.body;
 
   console.log("req.body: ", JSON.stringify(req.body));
-
   try {
+    console.log("name: ", name);
     const newProduct = new Product({
       name,
       description,
@@ -40,8 +37,10 @@ export const addProducts = async (req: Request, res: Response) => {
       stockQuantity,
     });
     await newProduct.save();
+    console.log("Product Added: ", newProduct);
     res.status(201).json({ message: "Product uploaded successfully" });
   } catch (err) {
+    console.log("Error: ", err);
     res.status(500).json({ message: "Products not Added" });
   }
 };

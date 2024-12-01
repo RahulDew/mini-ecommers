@@ -5,6 +5,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./connection/connect";
 import authRoutes from "./routes/authRoutes";
+import productRoutes from "./routes/productRoutes";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -20,20 +22,19 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 
 // // Routes
 // app.get("/", (req: Request, res: Response) => {
 //   res.json({ message: "Welcome to the TypeScript backend!" });
 // });
+connectDB();
 
 app.use("/auth", authRoutes);
-// app.use("/products", authRoutes);
+app.use("/products", productRoutes);
 // app.use("/orders", authRoutes);
-
-connectDB();
 
 // Start the server
 app.listen(PORT, () => {
-  console.log("hii");
   console.log(`Server is running on http://localhost123:${PORT}`);
 });

@@ -15,3 +15,22 @@ body {
   scrollbar-width: auto;
   scrollbar-color: rgb(11, 71, 200);
 }
+
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 200px;
+  /* border: 1px solid #3f15ab; */
+  border-radius: 5px;
+  background-color: #243bcb;
+}
+
+.selected-option {
+  padding: 10px;
+  font-size: 16px;
+  color: black;
+  border: 2px solid black;
+  font-weight: 500;
+  background-color: transparent;
+  cursor: pointer;
+}

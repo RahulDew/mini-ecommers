@@ -7,11 +7,13 @@ import { baseURL } from "../config/config";
 interface AuthContextProps {
   user: User | null;
   logout: () => void;
+  checkAuthStatus: () => void;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
   user: null,
   logout: () => {},
+  checkAuthStatus: () => {},
 });
 interface User {
   id: string;
@@ -71,6 +73,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
   const values = {
     user,
     logout,
+    checkAuthStatus,
   };
 
   return (

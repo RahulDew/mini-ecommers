@@ -3,7 +3,8 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { baseURL } from "../../config/config";
 import { SubmitHandler, useForm } from "react-hook-form";
-import useAuth from "../../hooks/useAuth";
+// import useAuth from "../../hooks/useAuth";
+import { useAuthContext } from "../../context/AuthContext";
 
 interface IFormInputs {
   email: string;
@@ -16,7 +17,8 @@ export default function Login() {
   const [authError, setAuthError] = useState("");
 
   const navigate = useNavigate();
-  const { checkAuthStatus } = useAuth();
+  // const { checkAuthStatus } = useAuth();
+  const { checkAuthStatus } = useAuthContext();
 
   const {
     register,
@@ -156,7 +158,7 @@ export default function Login() {
                 className={`${
                   authLoading &&
                   "cursor-not-allowed bg-indigo-600 border-indigo-600"
-                } w-full rounded-lg p-2 mt-5 text-[17px] outline-none bg-transparent border-2 border-black duration-300 bg-black hover:bg-indigo-600 hover:border-indigo-600 text-white font-semibold`}
+                } w-full rounded-lg p-2 mt-5 text-[17px] outline-none bg-transparent border-2 border-neutral-950 duration-300 bg-black hover:bg-indigo-600 hover:border-indigo-600 text-white font-semibold`}
               >
                 {authLoading ? (
                   <div className="flex justify-center items-center">

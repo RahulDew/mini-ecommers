@@ -27,3 +27,5 @@ const OrderSchema: Schema = new Schema<IOrder>(
   },
   { timestamps: true }
 );
+
+export default mongoose.model<IOrder>("Order", OrderSchema);

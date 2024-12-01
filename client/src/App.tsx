@@ -6,8 +6,11 @@ import HomePage from "./pages/homePage";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProductPage from "./pages/ProductPage";
 import ProtectedRoute from "./components/ProtectedRoutes";
-import useAuth from "./hooks/useAuth";
 import { useAuthContext } from "./context/AuthContext";
+import AddProductPage from "./pages/AddProductPage";
+import UpdateProductPage from "./pages/UpdateProductPage";
+import ProductsPage from "./pages/ProductsPage";
+import ProductsAnalysisPage from "./pages/ProductsAnalysisPage";
 
 function App() {
   const { user } = useAuthContext();
@@ -20,6 +23,7 @@ function App() {
 
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
         <Route
           path="/admin"
           element={
@@ -28,12 +32,45 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/add-product"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AddProductPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/update-product/:id"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <UpdateProductPage />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
-          path="/user"
+          path="/products-analysis"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <ProductsAnalysisPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/product/:id"
           element={
             <ProtectedRoute allowedRoles={["user", "admin"]}>
               <ProductPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/products"
+          element={
+            <ProtectedRoute allowedRoles={["user", "admin"]}>
+              <ProductsPage />
             </ProtectedRoute>
           }
         />
