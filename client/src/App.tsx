@@ -11,6 +11,7 @@ import AddProductPage from "./pages/AddProductPage";
 import UpdateProductPage from "./pages/UpdateProductPage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductsAnalysisPage from "./pages/ProductsAnalysisPage";
+import PublicRoutes from "./components/PublicRoutes";
 
 function App() {
   const { user } = useAuthContext();
@@ -19,13 +20,14 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route element={<PublicRoutes />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
 
         <Route
-          path="/admin"
+          path="/dashboard"
           element={
             <ProtectedRoute allowedRoles={["admin"]}>
               <AdminDashboard />
@@ -48,7 +50,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/products-analysis"
           element={

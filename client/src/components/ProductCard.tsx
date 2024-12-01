@@ -12,13 +12,11 @@ interface Product {
 export default function ProductCard({ id, imgUrl, name, price }: Product) {
   const handleAddToCart = () => {};
 
-  const { user } = useAuthContext();
-
   return (
     <>
-      <div className="w-52 flex flex-col justify-center gap-2 cursor-pointer">
+      <div className="w-60 sm:w-56 flex flex-col justify-center gap-2 cursor-pointer">
         <Link to={`/product/${id}`} className="group space-y-2">
-          <div className="w-52 h-52 bg-white border-2 border-black group-hover:border-indigo-600 rounded-md flex justify-center items-center duration-300">
+          <div className="w-full h-60 sm:h-56 bg-white border-2 border-black group-hover:border-indigo-600 rounded-md flex justify-center items-center duration-300">
             <img
               src={imgUrl}
               className="w-full h-full object-cover rounded-md"

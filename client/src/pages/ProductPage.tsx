@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { baseURL } from "../config/config";
 import { useParams } from "react-router-dom";
+import Loader from "../components/Loader";
 
 interface IProductDetails {
   name: string;
@@ -21,41 +22,45 @@ export default function ProductPage() {
   const { id: productId } = useParams();
 
   const getProduct = async () => {
-    const res = await fetch(`${baseURL}/products/${productId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    const result = await res.json();
-    if (res.ok) {
-      console.log(result);
-      setProductDetails(result);
-    } else {
-      console.log(result.message);
+    setLoading(true);
+    try {
+      const res = await fetch(`${baseURL}/products/${productId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const result = await res.json();
+      if (res.ok) {
+        console.log(result);
+        setProductDetails(result);
+      } else {
+        console.log(result.message);
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    setLoading(true);
     getProduct();
-    setLoading(false);
   }, []);
 
   if (loading) {
     return (
-      <h3 className="text-center font-semibold text-2xl animate-pulse duration-300 mt-20">
-        Loading the product details...
-      </h3>
+      <div className="flex justify-center">
+        <Loader />
+      </div>
     );
   }
 
   return (
-    <section className="p-10 xl:px-32">
-      <main className="flex flex-col md:flex-row gap-7 lg:gap-14">
-        <div className="flex justify-center md:justify-start  items-start flex-col md:flex-row gap-3 ">
-          <div className="w-96 h-96 bg-gray-200 rounded-lg border-2 border-black hover:border-indigo-600 flex justify-center items-center mx-6">
+    <section className="p-10 px-0 md:px-5 xl:px-32">
+      <main className="flex flex-col md:flex-row gap-5 lg:gap-10">
+        <div className="max-sm:w-full flex justify-center md:justify-start items-start gap-3 ">
+          <div className="h-64 w-full sm:w-80 sm:h-80 md:w-96 md:h-96 bg-gray-200 rounded-lg border-2 border-black hover:border-indigo-600 flex justify-center items-center mx-6">
             <img
               src={
                 productDetails?.imageUrl ||
@@ -67,17 +72,19 @@ export default function ProductPage() {
         </div>
         <div className="flex flex-col gap-7 ">
           <ul className=" flex gap-3 flex-col ">
-            <li className="text-lg font-semibold">
+            <li className="text-base sm:text-lg font-semibold">
               Category: {productDetails?.category}
             </li>
-            <li className="text-2xl font-semibold">{productDetails?.name}</li>
-            <p className="w-full text-lg text-gray-600">
+            <li className="text-xl sm:text-2xl font-semibold ">
+              {productDetails?.name}
+            </li>
+            <p className="w-full text-base sm:text-lg text-gray-600">
               {productDetails?.description}
             </p>
             <li className="text-2xl font-semibold text-indigo-600">
               &#8377; {productDetails?.price}
             </li>
-            <li className="text-2xl font-semibold text-indigo-600">
+            <li className="text-xl sm:text-2xl font-semibold text-indigo-600">
               <span className="text-xl font-semibold text-black mr-3">
                 Remaining Stock:
               </span>
@@ -89,7 +96,7 @@ export default function ProductPage() {
               Add to Cart
             </button>
             <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2 rounded-full">
-              Buy Now
+              Order Now
             </button>
           </div>
         </div>

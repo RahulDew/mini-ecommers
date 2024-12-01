@@ -20,30 +20,33 @@ interface IProductsDetails {
 export default function ProductsAnalysisPage() {
   const [products, setProducts] = useState<IProductsDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const { user } = useAuthContext();
   const navigate = useNavigate();
 
   const getAllProducts = async () => {
-    const res = await fetch(`${baseURL}/products/`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    const result = await res.json();
-    if (res.ok) {
-      console.log(result);
-      setProducts(result.reverse());
-    } else {
-      console.log(result.message);
+    setLoading(true);
+    try {
+      const res = await fetch(`${baseURL}/products/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const result = await res.json();
+      if (res.ok) {
+        console.log(result);
+        setProducts(result.reverse());
+      } else {
+        console.log(result.message);
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    setLoading(true);
     getAllProducts();
-    setLoading(false);
   }, []);
 
   const handleDeleteProduct = async (productId: string) => {
@@ -67,29 +70,29 @@ export default function ProductsAnalysisPage() {
   return (
     <section className="space-y-10 py-5">
       <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-3xl">Products</h3>
-        {user?.role === "admin" && (
-          <button
-            onClick={() => {
-              navigate("/add-product");
-            }}
-            className="flex justify-center items-center font-semibold gap-2 bg-indigo-600 hover:bg-indigo-700 text-white hover:text-white p-2 px-4 rounded-xl duration-300"
-          >
-            <BiPlus className="font-bold text-xl" />
-            Add Product
-          </button>
-        )}
+        <h3 className="font-semibold text-2xl sm:text-3xl">Products</h3>
+        <button
+          onClick={() => {
+            navigate("/add-product");
+          }}
+          className="flex justify-center items-center font-semibold gap-2 bg-indigo-600 hover:bg-indigo-700 text-white hover:text-white p-2 sm:pr-3 rounded-xl duration-300"
+        >
+          <BiPlus className="font-bold text-2xl sm:text-xl" />
+          <span className="max-sm:hidden">Add Product</span>
+        </button>
       </div>
       {loading ? (
-        <Loader />
+        <div className="text-center">
+          <Loader />
+        </div>
       ) : Array.isArray(products) && products.length > 0 ? (
         // Products
         <div className="flex justify-start gap-5">
-          <table className="w-full text-sm text-left rtl:text-right rounded-md text-black ">
+          <table className="max-lg:hidden min-w-full text-sm text-left rounded-md text-black">
             <thead className="text-xs text-indigo-600 uppercase bg-white rounded-t-md">
               <tr>
                 <th scope="col" className="px-6 py-3">
-                  Product name
+                  Product Name
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Category
@@ -98,7 +101,7 @@ export default function ProductsAnalysisPage() {
                   Price
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  stockQuantity
+                  Stock Quantity
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Created At
@@ -119,9 +122,12 @@ export default function ProductsAnalysisPage() {
                 >
                   <th
                     scope="row"
-                    className=" text-black font-semibold whitespace-nowrap hover:text-indigo-600 duration-300"
+                    className="text-black font-semibold whitespace-nowrap hover:text-indigo-600 duration-300"
                   >
-                    <Link to={`/product/${product?._id}`} className="px-6 py-4">
+                    <Link
+                      to={`/product/${product?._id}`}
+                      className="px-6 py-4 block"
+                    >
                       {product?.name.length < 18
                         ? product?.name
                         : product?.name.substring(0, 18)}
@@ -155,6 +161,45 @@ export default function ProductsAnalysisPage() {
               ))}
             </tbody>
           </table>
+          <div className="lg:hidden flex gap-5 flex-wrap">
+            {products.map((product) => (
+              <div className="w-[250px] sm:w-[350px] h-[230px] odd:bg-white even:bg-indigo-200 p-5 text-left rounded-md">
+                <h4 className="font-semibold text-base truncate">{product?.name}</h4>
+                <div className="py-2">
+                  <p className="flex gap:2 text-base">
+                    <span className="font-semibold w-24"> Category:</span>
+                    <p>{product?.category}</p>
+                  </p>
+                  <p className="flex gap:2 text-base">
+                    <span className="font-semibold w-24">Price: </span>{" "}
+                    <p>&#8377; {product?.price}</p>
+                  </p>
+                  <p className="flex gap:2 text-base">
+                    <span className="font-semibold w-24">Stock:</span>{" "}
+                    <p>{product?.stockQuantity}</p>
+                  </p>
+                  <p className="flex gap:2 text-base">
+                    <span className="font-semibold w-24">Created At:</span>
+                    <p>{new Date(product?.createdAt).toLocaleDateString()}</p>
+                  </p>
+                </div>
+                <div className="flex gap-2 justify-end">
+                  <Link
+                    to={`/update-product/${product?._id}`}
+                    className="w-16 px-2 py-1 text-center rounded-md font-semibold text-sm bg-indigo-600 hover:bg-indigo-700 text-white duration-300"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    onClick={() => handleDeleteProduct(product?._id)}
+                    className="w-16 px-2 py-1 text-center rounded-md font-semibold text-sm bg-red-500 hover:bg-red-600 text-white duration-300"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       ) : (
         <div>

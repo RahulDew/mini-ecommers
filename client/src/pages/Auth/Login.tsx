@@ -65,10 +65,8 @@ export default function Login() {
   };
 
   return (
-    <div
-      className={`w-full min-h-screen text-center px-5 md:px-10 flex justify-center lg:px-16 py-6 bg-white duration-300`}
-    >
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+    <div className="w-full min-h-screen text-center px-5 md:px-10 flex justify-center lg:px-16 py-6  duration-300">
+      <div className="sm:mx-auto w-full sm:max-w-sm">
         <div className="text-black ">
           <h2 className="mt-10 text-center text-4xl font-bold leading-9 tracking-tight">
             Welcome back
@@ -155,10 +153,7 @@ export default function Login() {
             <div>
               <button
                 type="submit"
-                className={`${
-                  authLoading &&
-                  "cursor-not-allowed bg-indigo-600 border-indigo-600"
-                } w-full rounded-lg p-2 mt-5 text-[17px] outline-none bg-transparent border-2 border-neutral-950 duration-300 bg-black hover:bg-indigo-600 hover:border-indigo-600 text-white font-semibold`}
+                className="w-full rounded-lg p-2 mt-5 text-[17px] outline-none bg-black border-2 border-indigo-600 duration-300  hover:bg-indigo-600 hover:border-indigo-600 text-white font-semibold"
               >
                 {authLoading ? (
                   <div className="flex justify-center items-center">

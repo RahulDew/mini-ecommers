@@ -1,14 +1,10 @@
-import React from "react";
 
 const Loader = () => {
   return (
-    <div
-      role="status"
-      className="bg-slate-50 dark:bg-slate-900 p-2 rounded-full w-12 shadow-xl"
-    >
+    <div role="status" className="rounded-full ">
       <svg
         aria-hidden="true"
-        className="inline w-8 h-8 animate-spin fill-blue-600 text-transparent rounded-full"
+        className="inline w-8 h-8 animate-spin fill-indigo-700 text-transparent rounded-full"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

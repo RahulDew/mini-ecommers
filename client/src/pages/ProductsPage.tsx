@@ -18,33 +18,36 @@ interface IProductsDetails {
   createdAt: string | Date;
   updatedAt: string | Date;
 }
+
 export default function ProductsPage() {
   const [products, setProducts] = useState<IProductsDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const { user } = useAuthContext();
-  const navigate = useNavigate();
 
   const getAllProducts = async () => {
-    const res = await fetch(`${baseURL}/products/`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    const result = await res.json();
-    if (res.ok) {
-      console.log(result);
-      setProducts(result);
-    } else {
-      console.log(result.message);
+    setLoading(true);
+    try {
+      const res = await fetch(`${baseURL}/products/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const result = await res.json();
+      if (res.ok) {
+        console.log(result);
+        setProducts(result);
+      } else {
+        console.log(result.message);
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    setLoading(true);
     getAllProducts();
-    setLoading(false);
   }, []);
 
   return (
@@ -53,10 +56,12 @@ export default function ProductsPage() {
         <h3 className="font-semibold text-3xl">Products</h3>
       </div>
       {loading ? (
-        <Loader />
+        <div className="flex justify-center">
+          <Loader />
+        </div>
       ) : Array.isArray(products) && products.length > 0 ? (
         // Products
-        <div className="flex justify-start flex-wrap gap-5">
+        <div className="flex justify-center md:justify-start flex-wrap gap-5">
           {products.map((product) => (
             <div key={product._id}>
               <ProductCard
