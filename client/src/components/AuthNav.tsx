@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
 import { LuLogIn } from "react-icons/lu";
 import { BsFillCartFill } from "react-icons/bs";
-const NavbarData = {
-  logoName: "MiniEcommerce",
-};
+import { NavbarData } from "../constants/constants";
 
 export default function AuthNav() {
   return (
@@ -13,8 +11,8 @@ export default function AuthNav() {
           to={"/"}
           className="flex justify-center items-center gap-2 p-1 rounded-md"
         >
-          <BsFillCartFill className="text-3xl text-indigo-600 " />
-          <p className="text-indigo-600 font-bold text-2xl">
+          <BsFillCartFill className="text-2xl sm:text-3xl text-indigo-600 " />
+          <p className="text-indigo-600 font-bold text-xl sm:text-2xl">
             {NavbarData.logoName}
           </p>
         </Link>

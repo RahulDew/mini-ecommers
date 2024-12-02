@@ -31,7 +31,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
   const checkAuthStatus = useCallback(() => {
     setAuthorizationLoading(true);
     const token = Cookies.get("token"); // Get the token from cookies
-    console.log("Token: ", token);
     if (token) {
       try {
         const decodedToken = jwtDecode<User>(token ?? "");

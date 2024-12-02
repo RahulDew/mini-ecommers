@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { baseURL } from "../config/config";
 import { Controller, set, SubmitHandler, useForm } from "react-hook-form";
 import { categories } from "../constants/constants";
@@ -178,7 +178,7 @@ export default function UpdateProduct({ isNewProduct = true }: ProductProps) {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex items-start justify-center flex-col md:flex-row w-full sm:px-10 gap-10"
+        className="flex items-start justify-center flex-col md:flex-row w-full sm:px-10 gap-10 pb-28"
       >
         <div className="space-y-3 w-full sm:w-[400px]">
           {/* input name */}
@@ -277,6 +277,9 @@ export default function UpdateProduct({ isNewProduct = true }: ProductProps) {
                 className="w-full rounded-lg p-2 text-[17px] outline-none text-black bg-transparent border-2 border-black focus:border-indigo-600 duration-300"
                 {...register("price", {
                   required: "Price is required",
+                  valueAsNumber: true,
+                  validate: (value) =>
+                    !isNaN(value) || "Value should be a number",
                 })}
               />
             </div>
@@ -299,6 +302,9 @@ export default function UpdateProduct({ isNewProduct = true }: ProductProps) {
                 className="w-full rounded-lg p-2 text-[17px] outline-none text-black bg-transparent border-2 border-black focus:border-indigo-600 duration-300"
                 {...register("stockQuantity", {
                   required: "stockQuantity is required",
+                  valueAsNumber: true,
+                  validate: (value) =>
+                    !isNaN(value) || "Value should be a number",
                 })}
               />
             </div>
@@ -318,12 +324,18 @@ export default function UpdateProduct({ isNewProduct = true }: ProductProps) {
               Product Category
             </label>
             <Controller
+              name="category"
+              control={control}
               render={({ field }) => (
                 <select
                   {...field}
                   className="selected-option w-full py-3 px-4 placeholder-neutral-800 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md"
                 >
-                  <option disabled className=" bg-neutral-950 text-white">
+                  <option
+                    disabled
+                    value=""
+                    className=" bg-neutral-950 text-white"
+                  >
                     Select your product category
                   </option>
                   {categories.map((category) => (
@@ -337,8 +349,6 @@ export default function UpdateProduct({ isNewProduct = true }: ProductProps) {
                   ))}
                 </select>
               )}
-              name="category"
-              control={control}
             />
             {errors.category && (
               <p className="text-red-600">This field is required</p>

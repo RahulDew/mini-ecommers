@@ -62,6 +62,7 @@ export default function ProductsAnalysisPage() {
     const result = await res.json();
     if (res.ok) {
       console.log(result);
+      getAllProducts();
     } else {
       console.log(result);
     }
@@ -161,27 +162,37 @@ export default function ProductsAnalysisPage() {
               ))}
             </tbody>
           </table>
-          <div className="lg:hidden flex gap-5 flex-wrap">
+          <div className="lg:hidden flex gap-5 flex-wrap max-sm:justify-center">
             {products.map((product) => (
-              <div className="w-[250px] sm:w-[350px] h-[230px] odd:bg-white even:bg-indigo-200 p-5 text-left rounded-md">
-                <h4 className="font-semibold text-base truncate">{product?.name}</h4>
+              <div
+                key={product?._id}
+                className="w-[250px] sm:w-[350px] h-[230px] bg-white border-2  border-black  p-5 text-left rounded-md"
+              >
+                <Link
+                  to={`/product/${product._id}`}
+                  className="font-semibold text-base truncate bg-indigo-200 p-2 rounded-md hover:text-indigo-600 duration-300"
+                >
+                  {product.name.length < 18
+                    ? product.name
+                    : `${product.name.substring(0, 18)}..`}
+                </Link>
                 <div className="py-2">
-                  <p className="flex gap:2 text-base">
+                  <div className="flex gap:2 text-base">
                     <span className="font-semibold w-24"> Category:</span>
                     <p>{product?.category}</p>
-                  </p>
-                  <p className="flex gap:2 text-base">
+                  </div>
+                  <div className="flex gap:2 text-base">
                     <span className="font-semibold w-24">Price: </span>{" "}
                     <p>&#8377; {product?.price}</p>
-                  </p>
-                  <p className="flex gap:2 text-base">
+                  </div>
+                  <div className="flex gap:2 text-base">
                     <span className="font-semibold w-24">Stock:</span>{" "}
                     <p>{product?.stockQuantity}</p>
-                  </p>
-                  <p className="flex gap:2 text-base">
+                  </div>
+                  <div className="flex gap:2 text-base">
                     <span className="font-semibold w-24">Created At:</span>
                     <p>{new Date(product?.createdAt).toLocaleDateString()}</p>
-                  </p>
+                  </div>
                 </div>
                 <div className="flex gap-2 justify-end">
                   <Link

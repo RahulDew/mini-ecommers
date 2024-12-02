@@ -37,7 +37,6 @@ export default function Register() {
   const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
     console.log(data);
     const { name, email, password, confirmPassword } = data;
-    console.log(name, email, password, confirmPassword);
 
     if (password !== confirmPassword) {
       setAuthError("Passwords do not match");
@@ -50,7 +49,12 @@ export default function Register() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, password, role }),
+        body: JSON.stringify({
+          name,
+          email: email.toLowerCase(),
+          password,
+          role,
+        }),
       });
       const data = await res.json();
       if (res.ok) {

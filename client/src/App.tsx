@@ -12,6 +12,9 @@ import UpdateProductPage from "./pages/UpdateProductPage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductsAnalysisPage from "./pages/ProductsAnalysisPage";
 import PublicRoutes from "./components/PublicRoutes";
+import OrdersAnalysisPage from "./pages/OrdersAnalysisPage";
+import OrdersPage from "./pages/OrdersPage";
+import SearchProductPage from "./pages/SearchProductPage";
 
 function App() {
   const { user } = useAuthContext();
@@ -59,6 +62,14 @@ function App() {
           }
         />
         <Route
+          path="/orders-analysis"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <OrdersAnalysisPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/product/:id"
           element={
             <ProtectedRoute allowedRoles={["user", "admin"]}>
@@ -66,12 +77,27 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/products"
           element={
             <ProtectedRoute allowedRoles={["user", "admin"]}>
               <ProductsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/search"
+          element={
+            <ProtectedRoute allowedRoles={["user", "admin"]}>
+              <SearchProductPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute allowedRoles={["user", "admin"]}>
+              <OrdersPage />
             </ProtectedRoute>
           }
         />

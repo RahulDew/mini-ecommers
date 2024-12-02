@@ -4,7 +4,10 @@ import AuthNav from "./AuthNav";
 const PublicRoutes = ({}) => {
   const { user } = useAuthContext();
   return user ? (
-    <Navigate to={"/products"} replace />
+    <Navigate
+      to={user?.role === "admin" ? "/dashboard" : "/products"}
+      replace
+    />
   ) : (
     <>
       <div className="h-screen w-screen fixed -z-10">

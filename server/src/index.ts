@@ -1,12 +1,13 @@
 import express, { Request, Response } from "express";
-// import cors from "cors";
 import cors from "cors";
 
 import dotenv from "dotenv";
 import { connectDB } from "./connection/connect";
+import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes";
 import productRoutes from "./routes/productRoutes";
-import cookieParser from "cookie-parser";
+import orderRoutes from "./routes/orderRoutes";
+import analysisRoutes from "./routes/analysisRoutes";
 
 dotenv.config();
 
@@ -24,15 +25,12 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-// // Routes
-// app.get("/", (req: Request, res: Response) => {
-//   res.json({ message: "Welcome to the TypeScript backend!" });
-// });
 connectDB();
 
 app.use("/auth", authRoutes);
 app.use("/products", productRoutes);
-// app.use("/orders", authRoutes);
+app.use("/orders", orderRoutes);
+app.use("/analysis", analysisRoutes);
 
 // Start the server
 app.listen(PORT, () => {

@@ -3,20 +3,18 @@ import MobileNav from "./MobileNav";
 import { BiCart } from "react-icons/bi";
 import { useAuthContext } from "../context/AuthContext";
 import { LuLogOut } from "react-icons/lu";
+import { adminNavLinks, customerNavLinks } from "../constants/constants";
+import { BsFillCartFill } from "react-icons/bs";
 const NavbarData = {
+  icon: <BiCart />,
   logoName: "MiniEcommerce",
-  navLinks: [
-    { name: "Dashboard", link: "/dashboard" },
-    { name: "Products", link: "/products" },
-    { name: "Orders", link: "/orders" },
-    { name: "Cart", link: "/cart" },
-  ],
 };
 
 export default function Navbar() {
   const navigate = useNavigate();
   const { logout, user } = useAuthContext();
 
+  const navLinks = user?.role === "admin" ? adminNavLinks : customerNavLinks;
   const handleOnClick = (link: string) => {
     navigate(link);
   };
@@ -28,17 +26,17 @@ export default function Navbar() {
     <nav className="w-full fixed z-30 px-3 lg:px-10 flex justify-center items-center backdrop-blur-md">
       <div className="w-full h-[60px] flex justify-between items-center font-semibold text-base ">
         <Link
-          to={"/"}
+          to={user?.role === "admin" ? "/dashboard" : "/products"}
           className="flex justify-center items-center gap-2 p-1 rounded-md"
         >
-          <BiCart className="text-3xl text-indigo-600 " />
-          <p className="text-indigo-600 font-bold text-xl">
+          <BsFillCartFill className="text-3xl text-indigo-600 " />
+          <p className="max-sm:hidden text-indigo-600 font-bold text-xl sm:text-2xl">
             {NavbarData.logoName}
           </p>
         </Link>
-        <div className="hidden md:flex justify-center items-center gap-2 lg:gap-3 bg-white shadow-2xl text-sm lg:text-base p-1.5 px-2 rounded-full">
-          {NavbarData.navLinks.map((navLink, index) => {
-            if (navLink.name === "Dashboard" && user?.role !== "dashboard") {
+        <div className="hidden md:flex justify-center items-center gap-2 lg:gap-3 shadow-md shadow-indigo-200 border-2 border-indigo-500 text-sm lg:text-base p-1.5 px-2 rounded-full">
+          {navLinks.map((navLink, index) => {
+            if (navLink.name === "Dashboard" && user?.role !== "admin") {
               return null;
             }
             return (
@@ -60,16 +58,15 @@ export default function Navbar() {
         <div className="flex gap-2">
           <button
             onClick={handleLogout}
-            className=" hidden md:flex justify-center items-center gap-2 bg-black hover:bg-indigo-600 text-white hover:text-white p-2 pb-3 px-4 rounded-xl duration-300"
+            className="flex justify-center items-center gap-2 bg-black hover:bg-indigo-600 text-white hover:text-white p-2 pb-3 px-4 rounded-xl duration-300"
           >
-            <h5>
+            <h5 className="max-sm:hidden">
               {user?.role !== "admin" ? user?.name.split(" ")[0] : "Admin"}
             </h5>
             <LuLogOut className="text-xl" />
           </button>
         </div>
       </div>
-      <MobileNav />
     </nav>
   );
 }

@@ -33,9 +33,7 @@ export default function Login() {
   });
 
   const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
-    console.log(data);
     const { email, password } = data;
-    console.log(email, password);
 
     setAuthLoading(true);
     try {
@@ -45,7 +43,7 @@ export default function Login() {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: email.toLowerCase(), password }),
       });
       const data = await res.json();
       if (res.ok) {

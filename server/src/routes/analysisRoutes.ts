@@ -1,10 +1,10 @@
 import { Router } from "express";
 
 import { authorize, verifyToken } from "../middlewares/middleware";
-import { getDocumentCounts } from "../controllers/analysisController";
+import { getOverview } from "../controllers/analysisController";
 const router = Router();
 
-router.get("/", verifyToken, authorize(["admin"]), getDocumentCounts);
+router.get("/", verifyToken, authorize(["admin"]), getOverview);
 // router.get("/:id", verifyToken, authorize(["admin"]), getProduct);
 // router.post("/", verifyToken, authorize(["admin"]), addProduct);
 // router.put("/:id", verifyToken, authorize(["admin"]), updateProduct);

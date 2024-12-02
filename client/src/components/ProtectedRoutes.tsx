@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import Navbar from "./Navbar";
+import MobileNav from "./MobileNav";
 
 interface Props {
   children: React.ReactNode;
@@ -40,6 +41,7 @@ const ProtectedRoute: React.FC<Props> = ({ children, allowedRoles }) => {
       <div className="relative z-50">
         <Navbar />
         <main className="pt-[60px] px-5 sm:px-10 lg:px-20 ">{children}</main>
+        <MobileNav />
       </div>
     </>
   );
