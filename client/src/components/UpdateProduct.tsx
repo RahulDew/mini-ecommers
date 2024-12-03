@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { baseURL } from "../config/config";
-import { Controller, set, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { categories } from "../constants/constants";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "./Loader";

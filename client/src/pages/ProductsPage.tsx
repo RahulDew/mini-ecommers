@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { BiPlus } from "react-icons/bi";
+
 import { baseURL } from "../config/config";
 import Loader from "../components/Loader";
 import ProductCard from "../components/ProductCard";

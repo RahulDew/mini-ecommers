@@ -24,7 +24,7 @@ const MobileNav = () => {
             key={index}
             to={navLink.link}
             onClick={() => handleOnClick(navLink.link)}
-            className={({ isActive, isPending }) =>
+            className={({ isActive }) =>
               isActive
                 ? "bg-indigo-600 text-white w-[100px] text-center p-2 px-2 rounded-full hover:text-primary duration-300 text-xs"
                 : "bg-white text-black hover:bg-indigo-600 hover:text-white w-[80px] lg:w-[120px] text-center text-xs  p-1.5 px-2 rounded-full hover:text-primary duration-300"

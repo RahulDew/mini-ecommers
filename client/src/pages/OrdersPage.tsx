@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { baseURL } from "../config/config";
 import Loader from "../components/Loader";
 import { useAuthContext } from "../context/AuthContext";

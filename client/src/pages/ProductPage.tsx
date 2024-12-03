@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { baseURL } from "../config/config";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import { MdAdd, MdOutlineRemove } from "react-icons/md";
 import { useAuthContext } from "../context/AuthContext";

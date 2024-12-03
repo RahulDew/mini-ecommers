@@ -1,5 +1,4 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import MobileNav from "./MobileNav";
 import { BiCart } from "react-icons/bi";
 import { useAuthContext } from "../context/AuthContext";
 import { LuLogOut } from "react-icons/lu";
@@ -44,7 +43,7 @@ export default function Navbar() {
                 key={index}
                 to={navLink.link}
                 onClick={() => handleOnClick(navLink.link)}
-                className={({ isActive, isPending }) =>
+                className={({ isActive }) =>
                   isActive
                     ? "bg-indigo-600 text-white w-[80px] lg:w-[120px] text-center p-1.5 px-2 rounded-full hover:text-primary duration-300"
                     : "bg-white text-black hover:bg-indigo-600 hover:text-white w-[80px] lg:w-[120px] text-center  p-1.5 px-2 rounded-full hover:text-primary duration-300"
