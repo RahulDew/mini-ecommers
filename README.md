@@ -14,6 +14,11 @@ This mini e-commerce web app allows users to view products with details like nam
 
 **Database:** MongoDB
 
+### used packages from npm
+- react-hook-form
+- react-icons
+- uuid 
+
 
 ## Run Locally
 
@@ -46,7 +51,8 @@ Start the server
   npm run dev
 
   cd client
-  npm run dev
+  npm run dev (for development)
+  npm start (for production)
 ```
 
 
@@ -68,7 +74,6 @@ For Server(backend)
 For Client (frontend)
 
 `VITE_API_BASE_URL=`
-
 
 
 
