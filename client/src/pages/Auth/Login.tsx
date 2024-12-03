@@ -3,7 +3,6 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { baseURL } from "../../config/config";
 import { SubmitHandler, useForm } from "react-hook-form";
-// import useAuth from "../../hooks/useAuth";
 import { useAuthContext } from "../../context/AuthContext";
 
 interface IFormInputs {
