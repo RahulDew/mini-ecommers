@@ -11,8 +11,15 @@ export const getAllOrders = async (req: Request, res: Response) => {
 };
 export const createOrder = async (req: Request, res: Response) => {
   try {
-    const { email, product, customerId, customerName, status, quantity } =
-      req.body;
+    const {
+      email,
+      product,
+      customerId,
+      customerName,
+      status,
+      quantity,
+      totalPrice,
+    } = req.body;
     const newOrder = new Order({
       customerId,
       customerName,
@@ -20,6 +27,7 @@ export const createOrder = async (req: Request, res: Response) => {
       product,
       status,
       quantity,
+      totalPrice,
     });
     await newOrder.save();
     res.status(201).json({ message: "Order created successfully" });
@@ -30,26 +38,22 @@ export const createOrder = async (req: Request, res: Response) => {
 export const updateOrder = async (req: Request, res: Response) => {
   const { status } = req.body;
   try {
-    console.log("Order ID:", req.params.id);
-    console.log("STATUS:", status);
-    const updatedOrder = await Order.findByIdAndUpdate(
+    
+    await Order.findByIdAndUpdate(
       req.params.id,
-      { status: status },
+      { status: status, updatedAt: new Date() },
       { new: true }
     );
-    console.log("Order Updated:", updatedOrder);
     res.status(200).json({ message: "Order Updated" });
   } catch (err) {
     res.status(500).json({ message: "Order not updated" });
   }
 };
 export const userOrders = async (req: Request, res: Response) => {
-  console.log(req.params.userId);
   try {
     const orders = await Order.find({ customerId: req.params.userId }).populate(
       "product"
     );
-    console.log(orders);
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });

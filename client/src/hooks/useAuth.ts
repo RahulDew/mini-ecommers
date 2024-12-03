@@ -23,15 +23,12 @@ const useAuth = (): AuthContextType => {
 
   const checkAuthStatus = useCallback(() => {
     const token = Cookies.get("token"); // Get the token from cookies
-    console.log("Token: ", token);
     if (token) {
       try {
         const decodedToken = jwtDecode<User>(token ?? "");
 
         setUser(decodedToken);
       } catch (error) {
-        console.log("Failed to decode token");
-        console.error("Failed to decode token:", error);
         setUser(null);
       }
     } else {
@@ -44,7 +41,6 @@ const useAuth = (): AuthContextType => {
   }, []);
 
   const logout = async () => {
-    console.log("logging out");
     try {
       await fetch(`${baseURL}/auth/logout`, {
         method: "POST",
@@ -56,7 +52,6 @@ const useAuth = (): AuthContextType => {
       setUser(null);
       //   navigate("/login");
     } catch (error) {
-      console.log("Logout Failed");
       console.error(error);
     }
   };

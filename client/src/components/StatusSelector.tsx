@@ -17,7 +17,6 @@ export default function StatusSelector({
       : "bg-red-100 text-red-700 border-2 border-red-700";
 
   const handleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log("Updated Order Status: ", e.target.value);
     if (orderStatus !== e.target.value) {
       handleUpdateOrderStatus(id, e.target.value);
     }

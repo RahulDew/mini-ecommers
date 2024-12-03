@@ -8,6 +8,7 @@ import authRoutes from "./routes/authRoutes";
 import productRoutes from "./routes/productRoutes";
 import orderRoutes from "./routes/orderRoutes";
 import analysisRoutes from "./routes/analysisRoutes";
+import { CLIENT_URL } from "./config/config";
 
 dotenv.config();
 
@@ -17,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: [CLIENT_URL],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

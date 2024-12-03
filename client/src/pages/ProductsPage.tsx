@@ -5,7 +5,6 @@ import { BiPlus } from "react-icons/bi";
 import { baseURL } from "../config/config";
 import Loader from "../components/Loader";
 import ProductCard from "../components/ProductCard";
-import { div } from "framer-motion/client";
 
 interface IProductsDetails {
   _id: string;
@@ -23,6 +22,8 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<IProductsDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const { handleShowToast } = useAuthContext();
+
   const getAllProducts = async () => {
     setLoading(true);
     try {
@@ -35,12 +36,17 @@ export default function ProductsPage() {
       });
       const result = await res.json();
       if (res.ok) {
-        console.log(result);
+        // console.log(result);
         setProducts(result);
       } else {
-        console.log(result.message);
+        // console.log(result.message);
+        handleShowToast(
+          result.message ? result.message : "Please try Again",
+          "warning"
+        );
       }
     } catch (error) {
+      handleShowToast("Server Error", "failure");
     } finally {
       setLoading(false);
     }

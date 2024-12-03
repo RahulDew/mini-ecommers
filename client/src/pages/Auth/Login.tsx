@@ -47,7 +47,6 @@ export default function Login() {
       });
       const data = await res.json();
       if (res.ok) {
-        console.log(data);
         checkAuthStatus();
         navigate("/");
       } else {
@@ -55,7 +54,6 @@ export default function Login() {
       }
     } catch (error) {
       setAuthError("Something went wrong");
-      console.error(error);
     } finally {
       setAuthLoading(false);
       reset();

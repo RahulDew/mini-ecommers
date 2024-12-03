@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { BiPlus } from "react-icons/bi";
+import { Link } from "react-router-dom";
 import { baseURL } from "../config/config";
 import Loader from "../components/Loader";
-import StatusSelector from "../components/StatusSelector";
 import CustomSelect from "../components/CustomSelect";
+import { useAuthContext } from "../context/AuthContext";
 
 interface IProductsDetails {
   _id: string;
@@ -25,6 +24,7 @@ interface IOrdersDetails {
   email: string;
   product: IProductsDetails;
   quantity: number;
+  totalPrice: number;
   status: "Pending" | "Completed" | "Cancelled";
   createdAt: string | Date;
   updatedAt: string | Date;
@@ -40,6 +40,8 @@ export default function OrdersAnalysisPage() {
   const [orders, setOrders] = useState<IOrdersDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const { handleShowToast } = useAuthContext();
+
   const getAllOrders = async () => {
     setLoading(true);
     try {
@@ -52,25 +54,27 @@ export default function OrdersAnalysisPage() {
       });
       const result = await res.json();
       if (res.ok) {
-        console.log(result);
+        // console.log(result);
         setOrders(result.reverse());
       } else {
-        console.log(result.message);
+        // console.log(result.message);
+        handleShowToast(
+          result.message ? result.message : "Please try again",
+          "warning"
+        );
       }
     } catch (error) {
+      handleShowToast("Server Error", "failure");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    console.log("Fetching Orders");
     getAllOrders();
   }, []);
 
   const handleUpdateOrderStatus = async (id: string, value: string) => {
-    console.log("Updating Order Status: ", id, value);
-
     try {
       const res = await fetch(`${baseURL}/orders/${id}`, {
         method: "PUT",
@@ -84,13 +88,18 @@ export default function OrdersAnalysisPage() {
       });
       const result = await res.json();
       if (res.ok) {
-        console.log(result);
+        // console.log(result);
+        handleShowToast(result.message ? result.message : "Done", "success");
         getAllOrders();
       } else {
-        console.log(result.message);
+        // console.log(result.message);
+        handleShowToast(
+          result.message ? result.message : "Please try again",
+          "failure"
+        );
       }
     } catch (error) {
-      console.log(error);
+      handleShowToast("Server Error", "failure");
     }
   };
 
@@ -104,7 +113,7 @@ export default function OrdersAnalysisPage() {
           <Loader />
         </div>
       ) : Array.isArray(orders) && orders.length > 0 ? (
-        // Products
+        // Products details
         <div className="flex justify-start gap-5">
           <table className="max-lg:hidden min-w-full text-sm text-left rounded-md text-black">
             <thead className="text-xs text-indigo-600 uppercase bg-white rounded-t-md">
@@ -161,7 +170,9 @@ export default function OrdersAnalysisPage() {
                         : order?.customerName.substring(0, 18)}
                     </td>
                     <td className="px-6 py-4 max-w-[59px]">{order?.email}</td>
-                    <td className="px-6 py-4 text-center">{order?.quantity}</td>
+                    <td className="px-6 py-4 text-center font-semibold">
+                      {order?.quantity}
+                    </td>
                     <td className="px-6 py-4">
                       &#8377; {order?.product.price * order?.quantity}
                     </td>
@@ -189,7 +200,10 @@ export default function OrdersAnalysisPage() {
           </table>
           <div className="lg:hidden flex gap-5 flex-wrap">
             {orders.map((order) => (
-              <div className="w-full sm:w-[350px] bg-white border-2 border-black p-5 text-left rounded-md">
+              <div
+                key={order?._id}
+                className="w-full sm:w-[350px] bg-white border-2 border-black p-5 text-left rounded-md"
+              >
                 <Link
                   to={`/product/${order.product._id}`}
                   className="font-semibold text-base truncate bg-indigo-200 p-2 rounded-md hover:text-indigo-600 duration-300"
@@ -203,26 +217,26 @@ export default function OrdersAnalysisPage() {
                     <span className="font-semibold w-24"> Name:</span>
                     <p className="truncate">{order?.customerName}</p>
                   </div>
-                  <p className="flex gap:2 text-base">
+                  <div className="flex gap:2 text-base">
                     <span className="font-semibold w-24">Email: </span>{" "}
                     <p className="truncate">{order?.email}</p>
-                  </p>
-                  <p className="flex gap:2 text-base">
+                  </div>
+                  <div className="flex gap:2 text-base">
                     <span className="font-semibold w-24">Total Price: </span>{" "}
                     <p>&#8377; {order?.product.price * order?.quantity}</p>
-                  </p>
-                  <p className="flex gap:2 text-base">
+                  </div>
+                  <div className="flex gap:2 text-base">
                     <span className="font-semibold w-24">Quantity:</span>{" "}
                     <p>{order?.quantity}</p>
-                  </p>
-                  <p className="flex gap:2 text-base">
+                  </div>
+                  <div className="flex gap:2 text-base">
                     <span className="font-semibold w-24">Created At:</span>
                     <p>{new Date(order?.createdAt).toLocaleDateString()}</p>
-                  </p>
-                  <p className="flex gap:2 text-base">
+                  </div>
+                  <div className="flex gap:2 text-base">
                     <span className="font-semibold w-24">Created At:</span>
                     <p>{new Date(order?.updatedAt).toLocaleDateString()}</p>
-                  </p>
+                  </div>
                 </div>
                 <CustomSelect
                   options={statusOptions}

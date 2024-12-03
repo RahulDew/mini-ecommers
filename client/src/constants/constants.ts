@@ -1,5 +1,3 @@
-import { BsFillCartFill } from "react-icons/bs";
-import React from "react";
 
 export const categories = [
   {

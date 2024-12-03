@@ -6,6 +6,7 @@ import { categories } from "../constants/constants";
 import SelectDropdown from "../components/SelectDropdown";
 import { TbShoppingCartSearch } from "react-icons/tb";
 import Loader from "../components/Loader";
+import { useAuthContext } from "../context/AuthContext";
 
 interface IProductsDetails {
   _id: string;
@@ -27,6 +28,8 @@ export default function SearchProductPage() {
   const [searchCategory, setSearchCategory] = useState<string>("");
   const [products, setProducts] = useState<IProductsDetails[]>([]);
 
+  const { handleShowToast } = useAuthContext();
+
   const getAllProducts = async () => {
     setLoading(true);
     try {
@@ -39,12 +42,17 @@ export default function SearchProductPage() {
       });
       const result = await res.json();
       if (res.ok) {
-        console.log(result);
+        // console.log(result);
         setProducts(result);
       } else {
-        console.log(result.message);
+        // console.log(result.message);
+        handleShowToast(
+          result.message ? result.message : "Please try Again",
+          "warning"
+        );
       }
     } catch (error) {
+      handleShowToast("Server Error", "failure");
     } finally {
       setLoading(false);
     }
@@ -56,12 +64,10 @@ export default function SearchProductPage() {
 
   const handleChangeSearchCategory = (category: string) => {
     setSearchCategory(category);
-    console.log("Selected Category: ", category);
 
     const filteredProducts = products.filter(
       (product) => product.category === category
     );
-    console.log("Filtered Products: ", filteredProducts);
     setSearchedProducts(filteredProducts);
   };
 

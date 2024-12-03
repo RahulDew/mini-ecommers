@@ -22,6 +22,8 @@ export default function ProductsAnalysisPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  const { handleShowToast } = useAuthContext();
+
   const getAllProducts = async () => {
     setLoading(true);
     try {
@@ -34,12 +36,17 @@ export default function ProductsAnalysisPage() {
       });
       const result = await res.json();
       if (res.ok) {
-        console.log(result);
+        // console.log(result);
         setProducts(result.reverse());
       } else {
-        console.log(result.message);
+        // console.log(result.message);
+        handleShowToast(
+          result.message ? result.message : "Please try Again",
+          "warning"
+        );
       }
     } catch (error) {
+      handleShowToast("Server Error", "failure");
     } finally {
       setLoading(false);
     }
@@ -50,7 +57,6 @@ export default function ProductsAnalysisPage() {
   }, []);
 
   const handleDeleteProduct = async (productId: string) => {
-    console.log("Deleting product with ID: ", productId);
     const res = await fetch(`${baseURL}/products/${productId}`, {
       method: "DELETE",
       headers: {
@@ -58,13 +64,17 @@ export default function ProductsAnalysisPage() {
       },
       credentials: "include",
     });
-    console.log("res: ", res);
     const result = await res.json();
     if (res.ok) {
-      console.log(result);
+      // console.log(result);
+      handleShowToast(result.message ? result.message : "Deleted", "success");
       getAllProducts();
     } else {
-      console.log(result);
+      // console.log(result);
+      handleShowToast(
+        result.message ? result.message : "Please try Again",
+        "warning"
+      );
     }
   };
 

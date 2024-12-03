@@ -4,6 +4,7 @@ import { Controller, set, SubmitHandler, useForm } from "react-hook-form";
 import { categories } from "../constants/constants";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "./Loader";
+import { useAuthContext } from "../context/AuthContext";
 
 interface IProductForm {
   name: string;
@@ -35,10 +36,10 @@ export default function UpdateProduct({ isNewProduct = true }: ProductProps) {
   );
   const [loading, setLoading] = useState<boolean>(false);
 
+  const { handleShowToast } = useAuthContext();
+
   const navigate = useNavigate();
   const { id: productId } = useParams();
-
-  console.log("isNewProduct: ", isNewProduct);
 
   const getProduct = async () => {
     setLoading(true);
@@ -52,12 +53,15 @@ export default function UpdateProduct({ isNewProduct = true }: ProductProps) {
       });
       const result = await res.json();
       if (res.ok) {
-        console.log(result);
+        // console.log(result);
         setProductDetails(result);
+        handleShowToast(result.message, "success");
       } else {
-        console.log(result.message);
+        // console.log(result.message);
+        handleShowToast(result.message, "failure");
       }
     } catch (error) {
+      handleShowToast("Server Error", "warning");
     } finally {
       setLoading(false);
     }
@@ -112,7 +116,6 @@ export default function UpdateProduct({ isNewProduct = true }: ProductProps) {
   const imageUrl = watch("imageUrl");
 
   const addNewProduct = async (data: IProductForm) => {
-    console.log("adding data: ", data);
     const res = await fetch(`${baseURL}/products`, {
       method: "POST",
       headers: {
@@ -123,11 +126,13 @@ export default function UpdateProduct({ isNewProduct = true }: ProductProps) {
     });
     const result = await res.json();
     if (res.ok) {
-      console.log(result);
+      // console.log(result);
+      handleShowToast(result.message, "success");
       reset();
-      navigate("/products-analysis");
+      navigate(-1);
     } else {
-      console.log(result.message);
+      handleShowToast(result.message, "failure");
+      // console.log(result.message);
     }
   };
 
@@ -142,16 +147,21 @@ export default function UpdateProduct({ isNewProduct = true }: ProductProps) {
     });
     const result = await res.json();
     if (res.ok) {
-      console.log(result);
+      handleShowToast(
+        result.message ? result.message : "plese try again",
+        "success"
+      );
       reset();
       navigate("/admin");
     } else {
-      console.log(result.message);
+      handleShowToast(
+        result.message ? result.message : "plese try again",
+        "failure"
+      );
     }
   };
 
   const onSubmit: SubmitHandler<IProductForm> = async (data) => {
-    console.log(data);
     setLoading(true);
     try {
       if (isNewProduct) {
@@ -160,7 +170,7 @@ export default function UpdateProduct({ isNewProduct = true }: ProductProps) {
         UpdateProduct(data);
       }
     } catch (error) {
-      console.error(error);
+      handleShowToast("Server Error", "failure");
     } finally {
       setLoading(false);
     }

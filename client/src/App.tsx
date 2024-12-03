@@ -6,7 +6,6 @@ import HomePage from "./pages/homePage";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProductPage from "./pages/ProductPage";
 import ProtectedRoute from "./components/ProtectedRoutes";
-import { useAuthContext } from "./context/AuthContext";
 import AddProductPage from "./pages/AddProductPage";
 import UpdateProductPage from "./pages/UpdateProductPage";
 import ProductsPage from "./pages/ProductsPage";
@@ -17,9 +16,6 @@ import OrdersPage from "./pages/OrdersPage";
 import SearchProductPage from "./pages/SearchProductPage";
 
 function App() {
-  const { user } = useAuthContext();
-  console.log("From App:  USER: ", user);
-
   return (
     <Router>
       <Routes>

@@ -35,7 +35,6 @@ export default function Register() {
   });
 
   const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
-    console.log(data);
     const { name, email, password, confirmPassword } = data;
 
     if (password !== confirmPassword) {
@@ -58,17 +57,16 @@ export default function Register() {
       });
       const data = await res.json();
       if (res.ok) {
-        console.log(data);
+        reset();
         navigate("/login");
       } else {
         setAuthError(data.message);
       }
     } catch (error) {
       setAuthLoading(false);
-      setAuthError("Something went wrong");
+      setAuthError("Something went wrong! Please try again.");
     } finally {
       setAuthLoading(false);
-      reset();
     }
   };
 

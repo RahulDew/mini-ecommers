@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { baseURL } from "../config/config";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import { MdAdd, MdOutlineRemove } from "react-icons/md";
 import { useAuthContext } from "../context/AuthContext";
@@ -24,7 +24,7 @@ export default function ProductPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const { id: productId } = useParams();
 
-  const { user } = useAuthContext();
+  const { user, handleShowToast } = useAuthContext();
 
   const getProduct = async () => {
     setLoading(true);
@@ -38,12 +38,17 @@ export default function ProductPage() {
       });
       const result = await res.json();
       if (res.ok) {
-        console.log(result);
+        // console.log(result);
         setProductDetails(result);
       } else {
-        console.log(result.message);
+        // console.log(result.message);
+        handleShowToast(
+          result.message ? result.message : "Please try Again",
+          "warning"
+        );
       }
     } catch (error) {
+      handleShowToast("Server Error", "failure");
     } finally {
       setLoading(false);
     }
@@ -67,17 +72,18 @@ export default function ProductPage() {
           product: productId,
           customerName: user?.role === "admin" ? "Admin" : user?.name,
           status: "Pending",
+          totalPrice: (productDetails?.price ?? 0) * quantity,
           quantity,
         }),
       });
       const result = await res.json();
       if (res.ok) {
-        console.log(result);
+        handleShowToast(result.message, "success");
       } else {
-        console.log(result.message);
+        handleShowToast(result.message, "failure");
       }
     } catch (error) {
-      console.log(error);
+      handleShowToast("Server Error", "failure");
     }
   };
 

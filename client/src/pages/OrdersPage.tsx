@@ -24,6 +24,7 @@ interface IOrdersDetails {
   email: string;
   product: IProductsDetails;
   quantity: number;
+  totalPrice: number;
   status: "Pending" | "Completed" | "Cancelled";
   createdAt: string | Date;
   updatedAt: string | Date;
@@ -33,7 +34,7 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState<IOrdersDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { user } = useAuthContext();
+  const { user, handleShowToast } = useAuthContext();
 
   const getAllOrders = async () => {
     setLoading(true);
@@ -47,12 +48,17 @@ export default function OrdersPage() {
       });
       const result = await res.json();
       if (res.ok) {
-        console.log(result);
+        // console.log(result);
         setOrders(result.reverse());
       } else {
-        console.log(result.message);
+        // console.log(result.message);
+        handleShowToast(
+          result.message ? result.message : "Please try again",
+          "warning"
+        );
       }
     } catch (error) {
+      handleShowToast("Server Error", "failure");
     } finally {
       setLoading(false);
     }
