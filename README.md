@@ -87,6 +87,15 @@ For Client (frontend)
 - UI/UX design
 
 
+## Development Process / Steps
+
+- Setting the app with MERN stack (28/11/24)
+- Complete Auth + Form Validation (28/11/24)
+- Front-End and Back-End for product with CRUD Operation (30/11/24)
+- Order management (Front-End + Back-End) (01/12/24)
+- Analytics and Correaction on code (02/12/24) 
+- Search Functinality based on Categories (03/12/24)
+
 
 ## Lessons Learned
 
@@ -97,7 +106,6 @@ For Client (frontend)
 - Managing the UI with responsiveness like table and complex user interaction is complex but it help to understand.
 
 - MongoDB concepts helped me to solve complex problems effectively
-
 
 
 ## Screenshots
@@ -124,5 +132,5 @@ For Client (frontend)
 
 ## Need Help
 
-- I'm facing problems in deploying the app in production 
+- I'm facing problems in deploying the app (backend) in production 
 
